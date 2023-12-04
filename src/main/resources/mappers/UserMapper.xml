@@ -17,5 +17,33 @@
         WHERE uid = #{uid}
     </select>
 
+    <update id="picPatch">
+        UPDATE t_user
+        SET pic = #{pic}
+        WHERE iuser = #{iuser}
+    </update>
+
+    <select id="selUserInfo">
+        SELECT COUNT(distinct B.ifeed) AS feedCnt, COUNT(C.ifeed) AS favCnt, A.nm as writerNm, A.created_at as createdAt
+        FROM t_user A
+        LEFT JOIN t_feed B
+        ON A.iuser = B.iuser
+        JOIN t_feed_fav C
+        ON B.ifeed = C.ifeed
+        WHERE A.iuser = #{targetIuser}
+    </select>
+
+    <insert id="insFollow">
+        INSERT INTO t_user_follow
+        SET from_iuser = #{fromIuser}
+        , to_iuser = #{toIuser}
+    </insert>
+
+    <delete id="delFollow">
+        DELETE FROM t_user_follow
+        WHERE from_iuser = #{fromIuser} AND to_iuser = #{toIuser}
+    </delete>
+
+
 
 </mapper>

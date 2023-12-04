@@ -16,9 +16,19 @@
         FROM t_feed A
         JOIN t_user B
         ON A.iuser = B.iuser
-        LEFT JOIN t_feed_fav C
+        <choose><!--if else if 내가 쓴 피드, 좋아요 한 피드 구분해서 보기-->
+            <when test="isFavList == 1">
+                INNER JOIN t_feed_fav C
+            </when>
+            <otherwise>
+                LEFT JOIN t_feed_fav C
+            </otherwise>
+        </choose>
         ON A.ifeed = C.ifeed
         AND C.iuser = #{loginedIuser}
+        <if test="isFavList == 0 and targetIuser > 0">
+            WHERE A.iuser = #{targetIuser}
+        </if>
         ORDER BY A.ifeed DESC
         LIMIT #{startIdx} , #{rowCount}
     </select>
@@ -45,7 +55,6 @@
         DELETE FROM t_feed
         WHERE ifeed = #{ifeed} AND iuser = #{iuser};
     </delete>
-
 
 
 </mapper>

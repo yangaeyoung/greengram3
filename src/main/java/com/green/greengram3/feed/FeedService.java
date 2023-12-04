@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.green.greengram3.common.Const.FAIL;
 import static com.green.greengram3.common.Const.FEED_COMMENT_FIRST_CNT;
 
 @Service
@@ -44,7 +45,6 @@ public class FeedService {
     // select문을 4번만 하면 되는데 +1을 했기 때문에 n+1의 방식이라고 함
     public List<FeedSelVo> selFeedAll(FeedSelDto dto) {
         List<FeedSelVo> list = mapper.selFeedAll(dto);
-        log.info("list = {}", list);
 
         FeedCommentSelDto fcDto = new FeedCommentSelDto();
         fcDto.setStartIdx(0);
@@ -57,7 +57,6 @@ public class FeedService {
             List<FeedCommentSelVo> comments = commentMapper.selFeedCommentAll(fcDto);
             vo.setComments(comments);
             vo.setIsMoreComment(0);
-            log.info("comment : {}", comments);
             if (comments.size() == Const.FEED_COMMENT_FIRST_CNT) {
                 vo.setIsMoreComment(1);
                 comments.remove(comments.size() - 1);
@@ -75,12 +74,12 @@ public class FeedService {
         return new ResVo(Const.FEED_FAV_DEL);
     }
 
-    public ResVo delFeed(FeedDelDto dto) {
+    public ResVo delFeed(FeedDelDto dto) { //트랜잭션으로 롤백하는 방법도 있음 (@Transactional 붙이고 데이터베이스 연동하는 부분에서 세팅 필요)
         int affectedRow = mapper.selFeed(dto);
-        if(affectedRow == 1){
+        if(affectedRow == Const.SUCCESS){
             mapper.delFeedAll(dto);
             return new ResVo(mapper.delFeed(dto));
         }
-        return new ResVo(0);
+        return new ResVo(Const.FAIL);
     }
 }

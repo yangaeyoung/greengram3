@@ -24,26 +24,46 @@ public class UserService {
                 .pic(dto.getPic())
                 .build();
         int result = mapper.insUser(pdto);
-        if(result == 0){
+        if (result == 0) {
             return new ResVo(0);
         }
         return new ResVo(pdto.getIuser()); // 회원가입한 iuser pk값이 리턴
     }
 
-    public UserSigninVo signin(UserSigninDto dto){
+    public UserSigninVo signin(UserSigninDto dto) {
         UserSigninProcDto pDto = mapper.selUser(dto.getUid());
         UserSigninVo vo = new UserSigninVo();
-        if(pDto == null){
+        if (pDto == null) {
             vo.setResult(Const.LOGIN_NO_UID);
         } else if (!BCrypt.checkpw(dto.getUpw(), pDto.getUpw())) {
             vo.setResult(Const.LOGIN_WRONG_UPW);
 
-        }else {
+        } else {
             vo.setResult(Const.SUCCESS);
             vo.setIuser(pDto.getIuser());
             vo.setNm(pDto.getNm());
             vo.setPic(pDto.getPic());
         }
         return vo;
+    }
+
+    public UserInfoVo selUserInfo(int targetIuser) {
+        return mapper.selUserInfo(targetIuser);
+    }
+
+    public ResVo selPatchPic(UserPicDto dto) {
+        return new ResVo(mapper.picPatch(dto));
+    }
+
+    public ResVo toggleFollow(UserFollowDto dto) {
+        int delaffectedRow = mapper.delFollow(dto);
+        if (delaffectedRow == 1) {
+            return new ResVo(Const.FAIL);
+        }
+        int affectedRow = mapper.insFollow(dto);
+        if (affectedRow == 1) {
+            return new ResVo(Const.SUCCESS);
+        }
+        return null;
     }
 }
