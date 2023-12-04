@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.greengram3.user.UserMapper">
+    <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser">
+        INSERT INTO t_user
+        SET uid = #{uid}
+        , upw = #{upw}
+        , nm = #{nm}
+        , pic = #{pic}
+    </insert>
+
+    <select id="selUser">
+        SELECT iuser, nm, pic, upw
+        FROM t_user
+        WHERE uid = #{uid}
+    </select>
+
+
+</mapper>
