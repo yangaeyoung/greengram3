@@ -47,8 +47,8 @@ public class UserService {
         return vo;
     }
 
-    public UserInfoVo selUserInfo(int targetIuser) {
-        return mapper.selUserInfo(targetIuser);
+    public UserInfoVo selUserInfo(UserInfoSelDto dto) {
+        return mapper.selUserInfo(dto);
     }
 
     public ResVo selPatchPic(UserPicDto dto) {

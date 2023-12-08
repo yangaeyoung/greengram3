@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @GetMapping
-    public UserInfoVo selUserInfo (@RequestParam(value = "target_iuser") int targetIuser){
-        return service.selUserInfo(targetIuser);
+    public UserInfoVo selUserInfo (UserInfoSelDto dto){
+        return service.selUserInfo(dto);
     }
 
     // follow

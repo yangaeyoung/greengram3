@@ -24,12 +24,26 @@
     </update>
 
     <select id="selUserInfo">
-        SELECT COUNT(distinct B.ifeed) AS feedCnt, COUNT(C.ifeed) AS favCnt, A.nm as writerNm, A.created_at as createdAt
+        SELECT A.nm, A.pic, A.created_at AS createdAt
+        , COUNT(DISTINCT B.ifeed) AS feedCnt
+        , COUNT(C.ifeed) AS favCnt
+        , D.following, D.follower, D.followState
         FROM t_user A
         LEFT JOIN t_feed B
         ON A.iuser = B.iuser
-        JOIN t_feed_fav C
+        LEFT JOIN t_feed_fav C
         ON B.ifeed = C.ifeed
+        INNER JOIN (
+        SELECT #{targetIuser} AS iuser
+        , SUM(IF(from_iuser = #{targetIuser}, 1, 0)) AS following
+            , SUM(IF(to_iuser = #{targetIuser}, 1, 0)) AS follower <!-- 타인의 프로필에 들어갔을 때 보여지는 것으로 to_iuser로 targetIuser 조회 -->
+            , (
+                SUM(IF(from_iuser = #{loginedIuser} AND to_iuser = #{targetIuser},1, 0))
+                + SUM(IF(from_iuser = #{targetIuser} AND to_iuser = #{loginedIuser}, 2, 0))
+                ) AS followState <!-- 0, 1, 2, 3 경우의 수: 4가지. 팔로우, 팔로워, 팔로잉, 맞팔 상태 -->
+            FROM t_user_follow
+        ) AS D
+        ON A.iuser = D.iuser
         WHERE A.iuser = #{targetIuser}
     </select>
 

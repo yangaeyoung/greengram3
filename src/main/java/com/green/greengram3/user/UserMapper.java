@@ -8,7 +8,7 @@ public interface UserMapper {
     int insUser (UserSignProcDto dto);
     UserSigninProcDto selUser (String uid);
     int picPatch (UserPicDto dto);
-    UserInfoVo selUserInfo (int targetIuser);
+    UserInfoVo selUserInfo (UserInfoSelDto dto);
     int insFollow (UserFollowDto dto);
     int delFollow (UserFollowDto dto);
 }
