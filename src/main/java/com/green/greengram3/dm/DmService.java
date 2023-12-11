@@ -1,5 +1,6 @@
 package com.green.greengram3.dm;
 
+import com.green.greengram3.common.Const;
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.dm.model.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,15 @@ public class DmService {
     }
 
     public List<DmMsgSelVo> getMsgAll(DmMsgSelDto dto){
+        log.info("dto:{}", dto);
         return mapper.selDmMsgAll(dto);
+    }
+
+    public ResVo delDmMsg(DmMsgDelDto dto) {
+        int affectedRows = mapper.delDmMsg(dto);
+        if(affectedRows == 0){
+            return new ResVo(Const.FAIL);
+        }
+        return new ResVo(Const.SUCCESS);
     }
 }

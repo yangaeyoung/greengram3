@@ -25,7 +25,7 @@
 
 
     <select id="selDmMsgAll">
-        SELECT A.seq, A.iuser as writerIuser, B.pic as writerPic, A.msg, A.created_at as createdAt
+        SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as writerPic <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
         FROM t_dm_msg A
         JOIN t_user B
         ON A.iuser = B.iuser
@@ -48,6 +48,10 @@
         ORDER BY A.last_msg_at DESC
         LIMIT #{startIdx}, #{rowCount}
     </select>
+
+    <delete id="delDmMsg">
+        DELETE FROM t_dm_msg WHERE seq = #{seq} AND iuser = #{iuser} AND idm = #{idm}
+    </delete>
 
 
     <!-- /////////////////////////////////////////////// t_dm_user -->
