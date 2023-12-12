@@ -16,4 +16,6 @@ public class Const {
     public static final int DM_COUNT_PER_PAGE = 30;
     public static final int FEED_COUNT_PER_PAGE = 30;
     public static final int DM_MSG_COUNT_PER_PAGE = 30;
+
+
 }

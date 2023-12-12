@@ -9,6 +9,23 @@
         SET last_msg = NULL
     </insert>
 
+    <!-- /////////////////////////////////////////////// t_dm_user -->
+    <insert id="insDmUser">
+        INSERT INTO t_dm_user
+        SET idm = #{idm}
+        , iuser = #{iuser}
+    </insert>
+    <!--
+    <insert id="insDmUser">
+        INSERT INTO t_dm_user
+          (idm, iuser)
+        VALUES
+         (#{idm}, #{iuser}),
+         (#{idm}, #{iuser})
+     </insert>
+     -->
+
+
     <!-- //////////////////////////////////////////////// t_dm_msg -->
     <insert id="insDmMsg">
         <selectKey resultType="int" keyProperty="seq" order="BEFORE">
@@ -23,9 +40,16 @@
         , msg = #{msg}
     </insert>
 
+    <select id="updDmLstMsg">
+        UPDATE t_dm
+        SET last_msg = #{msg}
+        WHERE idm = #{idm}
+    </select>
+
 
     <select id="selDmMsgAll">
-        SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as writerPic <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
+        SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as
+        writerPic <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
         FROM t_dm_msg A
         JOIN t_user B
         ON A.iuser = B.iuser
@@ -35,7 +59,7 @@
     </select>
 
     <select id="getDmAll">
-        SELECT A.idm, A.last_msg AS lastMsg, A.last_msg_at AS lastMsgAt, D.nm AS otherPersonNm, D.pic AS otherPersonPic
+        SELECT A.idm, A.last_msg AS lastMsg, A.last_msg_at AS lastMsgAt, D.iuser AS otherPersonIuser, D.nm AS otherPersonNm, D.pic AS otherPersonPic
         FROM t_dm A
         INNER JOIN t_dm_user B
         ON A.idm = B.idm
@@ -52,15 +76,6 @@
     <delete id="delDmMsg">
         DELETE FROM t_dm_msg WHERE seq = #{seq} AND iuser = #{iuser} AND idm = #{idm}
     </delete>
-
-
-    <!-- /////////////////////////////////////////////// t_dm_user -->
-    <insert id="insDmUser">
-        INSERT INTO t_dm_user
-        SET idm = #{idm}
-        , iuser = #{iuser}
-    </insert>
-
 
 
 </mapper>

@@ -31,20 +31,22 @@ public class UserService {
     }
 
     public UserSigninVo signin(UserSigninDto dto) {
-        UserSigninProcDto pDto = mapper.selUser(dto.getUid());
-        UserSigninVo vo = new UserSigninVo();
-        if (pDto == null) {
-            vo.setResult(Const.LOGIN_NO_UID);
-        } else if (!BCrypt.checkpw(dto.getUpw(), pDto.getUpw())) {
-            vo.setResult(Const.LOGIN_WRONG_UPW);
+        UserSelDto sDto = new UserSelDto();
+        sDto.setUid(dto.getUid());
 
-        } else {
-            vo.setResult(Const.SUCCESS);
-            vo.setIuser(pDto.getIuser());
-            vo.setNm(pDto.getNm());
-            vo.setPic(pDto.getPic());
+        UserEntity entity = mapper.selUser(sDto);
+        if(entity == null) {
+            return UserSigninVo.builder().result(Const.LOGIN_NO_UID).build();
+        } else if(!BCrypt.checkpw(dto.getUpw(), entity.getUpw())) {
+            return UserSigninVo.builder().result(Const.LOGIN_WRONG_UPW).build();
         }
-        return vo;
+
+        return UserSigninVo.builder()
+                .result(Const.SUCCESS)
+                .iuser(entity.getIuser())
+                .nm(entity.getNm())
+                .pic(entity.getPic())
+                .build();
     }
 
     public UserInfoVo selUserInfo(UserInfoSelDto dto) {

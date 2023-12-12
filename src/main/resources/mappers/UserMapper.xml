@@ -11,10 +11,20 @@
         , pic = #{pic}
     </insert>
 
+    <!-- 두번째 if문 iuser에 and 추가시 경우의 수가 4개가 되는데 이때 where절로 if문을 + 연결,
+     where (조건1) and (조건2)가 문법에 맞으나 현재 한 레코드에 둘이 있기 때문에 AND로 할 필요 X,
+     PK와 UNIQUE로 각각 다른 값을 넣어서 가져올 수 없음-->
     <select id="selUser">
-        SELECT iuser, nm, pic, upw
+        SELECT iuser, nm, pic, upw, uid, created_at as createdAt
         FROM t_user
-        WHERE uid = #{uid}
+        <where>
+            <if test="uid != null and uid != ''">
+                uid = #{uid}
+            </if>
+            <if test="iuser > 0">
+                iuser = #{iuser}
+            </if>
+        </where>
     </select>
 
     <update id="picPatch">
@@ -36,12 +46,13 @@
         INNER JOIN (
         SELECT #{targetIuser} AS iuser
         , SUM(IF(from_iuser = #{targetIuser}, 1, 0)) AS following
-            , SUM(IF(to_iuser = #{targetIuser}, 1, 0)) AS follower <!-- 타인의 프로필에 들어갔을 때 보여지는 것으로 to_iuser로 targetIuser 조회 -->
-            , (
-                SUM(IF(from_iuser = #{loginedIuser} AND to_iuser = #{targetIuser},1, 0))
-                + SUM(IF(from_iuser = #{targetIuser} AND to_iuser = #{loginedIuser}, 2, 0))
-                ) AS followState <!-- 0, 1, 2, 3 경우의 수: 4가지. 팔로우, 팔로워, 팔로잉, 맞팔 상태 -->
-            FROM t_user_follow
+        , SUM(IF(to_iuser = #{targetIuser}, 1, 0)) AS
+        follower <!-- 타인의 프로필에 들어갔을 때 보여지는 것으로 to_iuser로 targetIuser 조회 -->
+        , (
+        SUM(IF(from_iuser = #{loginedIuser} AND to_iuser = #{targetIuser},1, 0))
+        + SUM(IF(from_iuser = #{targetIuser} AND to_iuser = #{loginedIuser}, 2, 0))
+        ) AS followState <!-- 0, 1, 2, 3 경우의 수: 4가지. 팔로우, 팔로워, 팔로잉, 맞팔 상태 -->
+        FROM t_user_follow
         ) AS D
         ON A.iuser = D.iuser
         WHERE A.iuser = #{targetIuser}
@@ -57,7 +68,6 @@
         DELETE FROM t_user_follow
         WHERE from_iuser = #{fromIuser} AND to_iuser = #{toIuser}
     </delete>
-
 
 
 </mapper>

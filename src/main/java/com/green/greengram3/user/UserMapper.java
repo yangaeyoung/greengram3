@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     int insUser (UserSignProcDto dto);
-    UserSigninProcDto selUser (String uid);
+    UserEntity selUser (UserSelDto dto);
     int picPatch (UserPicDto dto);
     UserInfoVo selUserInfo (UserInfoSelDto dto);
     int insFollow (UserFollowDto dto);

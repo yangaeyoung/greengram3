@@ -22,9 +22,17 @@ public class DmController {
         return service.getDmAll(dto);
     }
 
-    @PostMapping("/msg")
-    public ResVo postDmMsg(@RequestBody DmMsgInsDto dto){
+    @PostMapping("/msg") // last_msg 마지막 대화 불러오기
+    public ResVo postDmMsg(@RequestBody DmMsgInsDto dto) {
         return service.postDmMsg(dto);
+    }
+
+    // dm창을 새로 만들 때 필요한 값 : iuser 값 두 개
+    // ResVo : 위의 list들을 불러와야 함
+    // DmSelVo
+    @PostMapping
+    public DmSelVo postDm(@RequestBody DmInsDto dto){
+        return service.postDm(dto);
     }
 
     @GetMapping("/msg")
