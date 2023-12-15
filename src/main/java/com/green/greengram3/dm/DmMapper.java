@@ -21,7 +21,6 @@ public interface DmMapper {
 
 
     //----------------------------------- t_dm_msg
-    int updDmLstMsg (DmMsgInsDto dto);
     List<DmMsgSelVo> selDmMsgAll (DmMsgSelDto dto); // dm 전체 화면 출력
     int insDmMsg(DmMsgInsDto dto); // dm 보내기
     int delDmMsg(DmMsgDelDto dto); // dm 삭제

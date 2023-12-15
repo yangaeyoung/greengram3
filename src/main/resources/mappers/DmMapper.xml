@@ -52,7 +52,7 @@
     <update id="updDmLastMsgAfterDelByLastMsg">
         UPDATE t_dm A
         INNER JOIN (
-        SELECT idm, msg, created_at
+        SELECT idm, msg, created_at AS createdAt
         FROM t_dm_msg
         WHERE idm = #{idm}
         ORDER BY seq DESC
@@ -86,8 +86,8 @@
 
 
     <select id="selDmMsgAll">
-        SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as
-        writerPic <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
+        SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as writerPic
+        <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
         FROM t_dm_msg A
         JOIN t_user B
         ON A.iuser = B.iuser
@@ -97,7 +97,9 @@
     </select>
 
     <select id="getDmAll">
-        SELECT A.idm, A.last_msg AS lastMsg, A.last_msg_at AS lastMsgAt, D.iuser AS otherPersonIuser, D.nm AS otherPersonNm, D.pic AS otherPersonPic
+        SELECT
+        A.idm, A.last_msg AS lastMsg, A.last_msg_at AS lastMsgAt
+        , D.iuser AS otherPersonIuser, D.nm AS otherPersonNm, D.pic AS otherPersonPic
         FROM t_dm A
         INNER JOIN t_dm_user B
         ON A.idm = B.idm
