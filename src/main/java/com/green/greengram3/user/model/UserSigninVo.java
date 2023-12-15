@@ -10,4 +10,5 @@ public class UserSigninVo { //pk값, 이름, 사진
     private int iuser;
     private String nm;
     private String pic;
+    private String firebaseToken;
 }

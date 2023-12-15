@@ -31,6 +31,11 @@ public class UserController {
         return service.signin(dto); //result 1:성공 2:아이디 없음 3.비밀번호 틀림
     }
 
+    @PatchMapping("/firebase-token")
+    public ResVo patchUserFirebaseToken(@RequestBody UserFirebaseTokenPatchDto dto) {
+        return service.patchUserFirebaseToken(dto);
+    }
+
     @PatchMapping("/pic")
     public ResVo selPatchPic (@RequestBody UserPicDto dto){
         return service.selPatchPic(dto);

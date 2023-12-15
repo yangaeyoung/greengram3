@@ -11,6 +11,18 @@
         , pic = #{pic}
     </insert>
 
+    <update id="updUserFirebaseToken">
+        UPDATE t_user
+        SET firebase_token = #{firebaseToken}
+        WHERE iuser = #{iuser}
+    </update>
+
+    <update id="updUserPic">
+        UPDATE t_user
+        SET pic = #{pic}
+        WHERE iuser = #{iuser}
+    </update>
+
     <!-- 두번째 if문 iuser에 and 추가시 경우의 수가 4개가 되는데 이때 where절로 if문을 + 연결,
      where (조건1) and (조건2)가 문법에 맞으나 현재 한 레코드에 둘이 있기 때문에 AND로 할 필요 X,
      PK와 UNIQUE로 각각 다른 값을 넣어서 가져올 수 없음 -->

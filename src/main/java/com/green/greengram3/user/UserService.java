@@ -49,6 +49,11 @@ public class UserService {
                 .build();
     }
 
+    public ResVo patchUserFirebaseToken(UserFirebaseTokenPatchDto dto) {
+        int affectedRows = mapper.updUserFirebaseToken(dto);
+        return new ResVo(affectedRows);
+    }
+
     public UserInfoVo selUserInfo(UserInfoSelDto dto) {
         return mapper.selUserInfo(dto);
     }
