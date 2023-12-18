@@ -9,5 +9,4 @@ class Greengram3ApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

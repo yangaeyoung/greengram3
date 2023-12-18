@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.green.greengram3.common.Const.FAIL;
-import static com.green.greengram3.common.Const.FEED_COMMENT_FIRST_CNT;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -68,7 +65,7 @@ public class FeedService {
     public ResVo togglefavFeed(FeedFavDto dto) {
         int result = favMapper.delFeedFav(dto);
         if (result == 0) {
-            int insAffectedRow = favMapper.insFeedFva(dto);
+            int insAffectedRow = favMapper.insFeedFav(dto);
             return new ResVo(Const.FEED_FAV_ADD);
         }
         return new ResVo(Const.FEED_FAV_DEL);

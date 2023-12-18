@@ -65,7 +65,6 @@ public class DmService {
 
                 Message message = Message.builder()
                         .setToken(otherPerson.getFirebaseToken())
-
                         .setNotification(noti)
                         .build();
 
