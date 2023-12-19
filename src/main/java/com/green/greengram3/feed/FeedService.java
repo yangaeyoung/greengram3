@@ -21,6 +21,7 @@ public class FeedService {
     public ResVo postFeed(FeedInsDto dto) {
         FeedInsProcDto pdto = FeedInsProcDto
                 .builder()
+                .ifeed(dto.getIfeed())
                 .iuser(dto.getIuser())
                 .contents(dto.getContents())
                 .location(dto.getLocation())
@@ -28,14 +29,16 @@ public class FeedService {
                 .build();
         //트랜잭션 묶기
         int result = mapper.insFeed(pdto);
+        log.info("result : {}", result);
         int result2 = picMapper.insPicFeed(pdto);// 사진의 사이즈 값 저장
+        log.info("result2 : {}", result2);
 
-        if (result == 0 || pdto.getIfeed() == 0) { //사진이 없을 경우 튕겨내기
-            return new ResVo(2);
-        }
-        if (result2 != dto.getPics().size()) {
-            return new ResVo(0);
-        }
+//        if (result == 0 || pdto.getIfeed() == 0) { //사진이 없을 경우 튕겨내기
+//            return new ResVo(2);
+//        }
+//        if (result2 != dto.getPics().size()) {
+//            return new ResVo(0);
+//        }
         return new ResVo(pdto.getIfeed());
     }
 

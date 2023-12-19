@@ -48,6 +48,7 @@
         GROUP BY idm
         HAVING COUNT(idm) = 2
     </select>
+    <!-- WHERE절까지는 두 유저가 대화한 idm방을 모두 찾고, 그룹으로 중복되는 idm방을 묶으며 idm방이 2개인 것을 찾으면 두 유저가 대화 중인 방을 찾을 수 있음 -->
 
     <update id="updDmLastMsgAfterDelByLastMsg">
         UPDATE t_dm A
@@ -77,6 +78,7 @@
         , iuser = #{loginedIuser}
         , msg = #{msg}
     </insert>
+    <!-- 마지막 메시지를 찾아 새로운 메시지 insert -->
 
     <select id="updDmLstMsg">
         UPDATE t_dm
@@ -87,7 +89,7 @@
 
     <select id="selDmMsgAll">
         SELECT A.seq, A.iuser as writerIuser, A.msg, A.created_at as createdAt, B.pic as writerPic
-        <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 -->
+        <!-- seq은 pk값을 알아야 지정 레코드를 출력 및 삭제 용이 -->
         FROM t_dm_msg A
         JOIN t_user B
         ON A.iuser = B.iuser

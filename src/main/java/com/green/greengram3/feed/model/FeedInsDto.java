@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class FeedInsDto {
+    private int ifeed;
     private int iuser;
     private String contents;
     private String location;
