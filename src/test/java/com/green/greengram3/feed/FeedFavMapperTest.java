@@ -11,11 +11,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*; //Assertions.assertEquals()의 Assertions 생략 가능하게 함
 
 @MybatisTest // spring 기동 DAO들이 빈등록(객체화)됨
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 기존 데이터베이를 바꾸지 않고 검사
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 기존 데이터베이스를 바꾸지 않고 검사
 class FeedFavMapperTest {
 
-    @Autowired // DI
-    private FeedFavMapper mapper; // 생성자 주입할 때 Final 사용 X RequiredArgsConstructor - final과 같음
+    @Autowired // DI, 생성자 주입할 때 Final 사용 X RequiredArgsConstructor - final과 같음
+    private FeedFavMapper mapper;
 
     @Test
     public void insFeedFavTest() {
