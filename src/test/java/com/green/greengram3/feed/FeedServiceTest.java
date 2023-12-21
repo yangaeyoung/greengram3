@@ -1,9 +1,8 @@
 package com.green.greengram3.feed;
 
+import com.green.greengram3.common.Const;
 import com.green.greengram3.common.ResVo;
-import com.green.greengram3.feed.model.FeedInsDto;
-import com.green.greengram3.feed.model.FeedSelDto;
-import com.green.greengram3.feed.model.FeedSelVo;
+import com.green.greengram3.feed.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class) // Spring 컨테이너로 올라오게 끔 함, 단위 테스트
-@Import({FeedService.class}) // 빈등록
+@Import({FeedService.class}) // 빈등록, 여러 개 가능
 class FeedServiceTest {
 
     @MockBean // 객체 주소 값이 있는 것처럼 가짜 bean을 등록, 하나라도 없으면 에러
@@ -39,14 +38,16 @@ class FeedServiceTest {
     @Test
     void postFeed() {
         when(mapper.insFeed(any())).thenReturn(1); // insFeed가 호출되고 입력되면 1을 return service에서 log.info
-        when(picMapper.insPicFeed(any())).thenReturn(3);
+        when(picMapper.insPicFeed(any())).thenReturn(3); // 사진은 여러 장 가능하니 1이 아닌 2,3도 가능
 
         FeedInsDto dto = new FeedInsDto();
-        dto.setIfeed(105);
+        dto.setIfeed(105); // assertEquals(dto.getIfeed(), vo.getResult()); 때문에 dto.setIfeed 값 넣어줌
         ResVo vo = service.postFeed(dto);
-        assertEquals(dto.getIfeed(), vo.getResult());
+        assertEquals(dto.getIfeed(), vo.getResult(), "auto_increament 제대로 실행 X");
+        // ifeed 값 세팅: FeedService에서 mapper.insFeed 가 실행되면 auto_increment로 인해서 ifeed값이 생성되어
+        // 제대로 실행되어 return resvo에 ifeed가 제대로 turn이 되는지 확인하기 위해서
 
-        verify(mapper).insFeed(any()); // 그 안에서 진짜 호출되었는지
+        verify(mapper).insFeed(any()); // 그 안에서 진짜 호출되었는지 (값을 사용했는지는 알 수 없음)
         verify(picMapper).insPicFeed(any());
 
         FeedInsDto dto2 = new FeedInsDto();
@@ -78,29 +79,62 @@ class FeedServiceTest {
         when(picMapper.selPicFeed(1)).thenReturn(feed1Pics); // mapper을 실행 시키고(FeedService에서) 원하는 게(위에 임의로 지정한 값) return되도록 설정할 수 있음
         when(picMapper.selPicFeed(2)).thenReturn(feed2Pics);
 
+
+
+
+//        for (FeedSelVo vo : list) { // 우리가 임으로 지정한 값이 list에 들어가고 위의 list가 FeedService에서의 list로
+//            assertNotNull(vo.getPics());
+//            System.out.println(vo);
+//        }
+
+        FeedCommentSelVo cmtsVo = new FeedCommentSelVo();
+        cmtsVo.setIfeedComment(1);
+        cmtsVo.setComment("일번 댓글");
+
+        FeedCommentSelVo cmtsVo1 = new FeedCommentSelVo();
+        cmtsVo1.setIfeedComment(2);
+        cmtsVo1.setComment("이번 댓글");
+
+        List<FeedCommentSelVo> voList = new ArrayList<>();
+        voList.add(cmtsVo);
+        voList.add(cmtsVo1);
+
+        FeedCommentSelDto fcDto1 = new FeedCommentSelDto();
+        fcDto1.setStartIdx(0); // 파라미터에 담긴 값 그대로 넣어야 함
+        fcDto1.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
+        fcDto1.setIfeed(fcDto1.getIfeed());
+        when(commentMapper.selFeedCommentAll(any())).thenReturn(voList);
+
+//        List<FeedCommentSelVo> commentResult1 = list.get(0).getComments();
+//        assertEquals(voList, commentResult1);
+
+
+
+
+
+
+
         FeedSelDto dto = new FeedSelDto();
         List<FeedSelVo> result = service.selFeedAll(dto); // 뭐가 넘어 오는지 모르지만 어떤 값이 넘어 올 것이란 것만 알 수 있음（진짜 호출）
 
-        // result & list 주소값 복사(셸로 카피)
-//        System.out.println(list == result); == ture
-        assertEquals(list, result);
+        for(int i=0; i<result.size(); i++) {
+            FeedSelVo rVo = result.get(i);
+            FeedSelVo pVo = list.get(i);
 
-        for(FeedSelVo vo : list) { // 우리가 임으로 지정한 값이 list에 들어가고 위의 list가 FeedService에서의 list로
-            assertNotNull(vo.getPics());
-            System.out.println(vo);
+
+//            System.out.println("rVo: " + rVo.getPics());
+//            System.out.println("rVo: " + rVo.getContents());
+//            System.out.println("rVo: " + rVo.getComments());
+
+            assertEquals(pVo.getIfeed(), rVo.getIfeed());
+            assertEquals(pVo.getContents(), rVo.getContents());
+            assertEquals(pVo.getComments(), rVo.getComments());
+            System.out.println(pVo.getComments());
         }
 
-//        for(int i=0; i<result.size(); i++) {
-//            FeedSelVo rVo = result.get(i);
-//            FeedSelVo pVo = list.get(i);
-//
-//            System.out.println(rVo.getPics());
-//            System.out.println(rVo.getContents());
-//
-//            assertEquals(pVo.getIfeed(), rVo.getIfeed());
-//            assertEquals(pVo.getContents(), rVo.getContents());
-//        }
-
+//        result & list 주소값 복사(셸로 카피)
+//        System.out.println(list == result); == ture
+        assertEquals(list, result);
 
 
     }

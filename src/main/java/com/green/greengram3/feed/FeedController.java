@@ -3,8 +3,6 @@ package com.green.greengram3.feed;
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.feed.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +39,7 @@ public class FeedController {
             @ApiResponse(responseCode = "200", description = "좋아요 처리 : result(1), 좋아요 철회 : result(0)")
     })
     public ResVo favFeed(FeedFavDto dto) {
-        return service.togglefavFeed(dto);
+        return service.toggleFavFeed(dto);
     }
 
     @DeleteMapping

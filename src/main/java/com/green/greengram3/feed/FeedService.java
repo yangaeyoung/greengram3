@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class FeedService {
     private final FeedMapper mapper;
     private final FeedPicMapper picMapper;
@@ -65,7 +65,7 @@ public class FeedService {
         return list;
     }
 
-    public ResVo togglefavFeed(FeedFavDto dto) {
+    public ResVo toggleFavFeed(FeedFavDto dto) {
         int result = favMapper.delFeedFav(dto);
         if (result == 0) {
             int insAffectedRow = favMapper.insFeedFav(dto);
