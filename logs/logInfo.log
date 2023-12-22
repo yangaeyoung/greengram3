@@ -875,3 +875,20 @@ java.lang.IllegalStateException: ApplicationContext failure threshold (1) exceed
 [2023-12-22 13:17:21 INFO  main] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
 [2023-12-22 13:17:22 INFO  main] [com.green.greengram3.feed.FeedControllerTest] Started FeedControllerTest in 1.739 seconds (process running for 2.572)
 [2023-12-22 13:17:22 INFO  main] [com.green.greengram3.common.my.MyInterceptor] ip = localhost
+[2023-12-22 14:45:12 INFO  main] [com.green.greengram3.feed.FeedControllerTest] Starting FeedControllerTest using Java 17.0.8.1 with PID 5904 (started by Administrator in D:\java\greengram3)
+[2023-12-22 14:45:12 INFO  main] [com.green.greengram3.feed.FeedControllerTest] No active profile set, falling back to 1 default profile: "default"
+[2023-12-22 14:45:13 INFO  main] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2023-12-22 14:45:13 INFO  main] [org.springframework.boot.test.mock.web.SpringBootMockServletContext] Initializing Spring TestDispatcherServlet ''
+[2023-12-22 14:45:13 INFO  main] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2023-12-22 14:45:13 INFO  main] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2023-12-22 14:45:13 INFO  main] [com.green.greengram3.feed.FeedControllerTest] Started FeedControllerTest in 1.684 seconds (process running for 2.719)
+[2023-12-22 14:45:14 INFO  main] [com.green.greengram3.common.my.MyInterceptor] ip = localhost
+[2023-12-22 14:45:14 INFO  main] [com.green.greengram3.feed.FeedController] dto = FeedSelDto(startIdx=20, rowCount=20, page=0, loginedIuser=2, targetIuser=0, isFavList=0)
+[2023-12-22 15:49:48 INFO  main] [com.green.greengram3.feed.FeedControllerTest] Starting FeedControllerTest using Java 17.0.8.1 with PID 10616 (started by Administrator in D:\java\greengram3)
+[2023-12-22 15:49:48 INFO  main] [com.green.greengram3.feed.FeedControllerTest] No active profile set, falling back to 1 default profile: "default"
+[2023-12-22 15:49:49 INFO  main] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2023-12-22 15:49:49 INFO  main] [org.springframework.boot.test.mock.web.SpringBootMockServletContext] Initializing Spring TestDispatcherServlet ''
+[2023-12-22 15:49:49 INFO  main] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2023-12-22 15:49:49 INFO  main] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2023-12-22 15:49:49 INFO  main] [com.green.greengram3.feed.FeedControllerTest] Started FeedControllerTest in 1.666 seconds (process running for 2.467)
+[2023-12-22 15:49:49 INFO  main] [com.green.greengram3.common.my.MyInterceptor] ip = localhost

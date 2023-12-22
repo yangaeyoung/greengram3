@@ -44,7 +44,7 @@ class FeedControllerTest {
 //        ResVo vo = service.postFeed(new FeedInsDto());
 //        System.out.println(vo); // -> null autowired & mockbean 테스트
 
-        ResVo result = new ResVo(5);
+        ResVo result = new ResVo(5); // Controller에 어노테이션 @RestController json 형태로 넘어옴
 //        when(service.postFeed(any())).thenReturn(result);
         given(service.postFeed(any())).willReturn(result); // 가짜에게 임무 부여
         // given: 세팅, when: 실행, then: 실행한 결과
@@ -60,11 +60,11 @@ class FeedControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON) // 데이터 json 형식으로 날리기
                                 .content(json) // body 부분 json으로 받기, 위 두 개는 헤더 부분
                 )
-                .andExpect(status().isOk()) // status: 성공 값 "result" : 5
+                .andExpect(status().isOk()) // status: 성공 값 {"result" : 5}
                 .andExpect(content().string(mapper.writeValueAsString(result))) // json 형태로 돌아올 것을 기대함
-                .andDo(print()); // 결과 프린터*/
+                .andDo(print()); // 결과 프린터
 
-        verify(service).postFeed(any());
+        verify(service).postFeed(any()); // Mock Object 메소드가 정해진 횟수만큼 호출 됐는지
     }
 
     @Test
@@ -76,7 +76,7 @@ class FeedControllerTest {
 
         List<FeedSelVo> list = new ArrayList<>();
 
-        FeedSelVo vo = new FeedSelVo(); // 쿼리 스트링으로 dto 말고 vo에다 담아줌
+        FeedSelVo vo = new FeedSelVo(); // Query String으로 dto 말고 vo에다 담아줌
         vo.setIfeed(1);
         vo.setContents("aaa");
         FeedSelVo vo2 = new FeedSelVo();
@@ -98,7 +98,6 @@ class FeedControllerTest {
                 .andDo(print());
 
         verify(service).selFeedAll(any()); // getFeedAll에 return값이 service.selFeedAll이기 때문에
-
     }
 
     @Test
@@ -124,8 +123,8 @@ class FeedControllerTest {
         mvc.perform(
                 MockMvcRequestBuilders
                         .delete("/api/feed")
-                        .params(params)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .params(params) // Query String으로 파라미터 값 입력
+//                        .contentType(MediaType.APPLICATION_JSON) Query String 형식으로 json 굳이 할 필요 X
         )
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(result)))
