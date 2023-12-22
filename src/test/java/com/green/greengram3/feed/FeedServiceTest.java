@@ -87,31 +87,65 @@ class FeedServiceTest {
 //            System.out.println(vo);
 //        }
 
-        FeedCommentSelVo cmtsVo = new FeedCommentSelVo();
-        cmtsVo.setIfeedComment(1);
-        cmtsVo.setComment("일번 댓글");
+        List<FeedCommentSelVo> cmtsFeed1 = new ArrayList<>();
 
-        FeedCommentSelVo cmtsVo1 = new FeedCommentSelVo();
-        cmtsVo1.setIfeedComment(2);
-        cmtsVo1.setComment("이번 댓글");
+        FeedCommentSelVo cmtVo1_1 = new FeedCommentSelVo();
+        cmtVo1_1.setIfeedComment(1);
+        cmtVo1_1.setComment("1-cmtVo1_1");
 
-        List<FeedCommentSelVo> voList = new ArrayList<>();
-        voList.add(cmtsVo);
-        voList.add(cmtsVo1);
+        FeedCommentSelVo cmtVo1_2 = new FeedCommentSelVo();
+        cmtVo1_2.setIfeedComment(2);
+        cmtVo1_2.setComment("2-cmtVo1_2");
+
+        cmtsFeed1.add(cmtVo1_1);
+        cmtsFeed1.add(cmtVo1_2);
+
+        List<FeedCommentSelVo> cmtsFeed2 = new ArrayList<>();
+
+        FeedCommentSelVo cmtVo2_1 = new FeedCommentSelVo();
+        cmtVo2_1.setIfeedComment(3);
+        cmtVo2_1.setComment("3-cmtVo2_1");
+
+        FeedCommentSelVo cmtVo2_2 = new FeedCommentSelVo();
+        cmtVo2_2.setIfeedComment(4);
+        cmtVo2_2.setComment("4-cmtVo2_2");
+
+        FeedCommentSelVo cmtVo2_3 = new FeedCommentSelVo();
+        cmtVo2_3.setIfeedComment(5);
+        cmtVo2_3.setComment("5-cmtVo2_3");
+
+        FeedCommentSelVo cmtVo2_4 = new FeedCommentSelVo();
+        cmtVo2_4.setIfeedComment(6);
+        cmtVo2_4.setComment("6-cmtVo2_4");
+
+        cmtsFeed2.add(cmtVo2_1);
+        cmtsFeed2.add(cmtVo2_2);
+        cmtsFeed2.add(cmtVo2_3);
+        cmtsFeed2.add(cmtVo2_4);
 
         FeedCommentSelDto fcDto1 = new FeedCommentSelDto();
         fcDto1.setStartIdx(0); // 파라미터에 담긴 값 그대로 넣어야 함
         fcDto1.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         fcDto1.setIfeed(fcDto1.getIfeed());
-        when(commentMapper.selFeedCommentAll(any())).thenReturn(voList);
-
-//        List<FeedCommentSelVo> commentResult1 = list.get(0).getComments();
-//        assertEquals(voList, commentResult1);
+        when(commentMapper.selFeedCommentAll(any())).thenReturn(cmtsFeed1);
 
 
+        FeedCommentSelDto fcDto2 = new FeedCommentSelDto();
+        fcDto2.setStartIdx(0);
+        fcDto2.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
+        fcDto2.setIfeed(2);
+        when( commentMapper.selFeedCommentAll(fcDto2) ).thenReturn(cmtsFeed2);
 
 
+        List<FeedCommentSelVo> commentsResult1 = list.get(0).getComments();
+        assertEquals(cmtsFeed1, commentsResult1, "ifeed(1) 댓글 체크");
+        assertEquals(0, list.get(0).getIsMoreComment(), "ifeed(1) isMoreComment 체크");
+        assertEquals(2, list.get(0).getComments().size(), "ifeed(1) commentSize 체크");
 
+        List<FeedCommentSelVo> commentsResult2 = list.get(1).getComments();
+        assertEquals(cmtsFeed2, commentsResult2, "ifeed(2) 댓글 체크");
+        assertEquals(1, list.get(1).getIsMoreComment(), "ifeed(2) isMoreComment 체크");
+        assertEquals(3, cmtsFeed2.size());
 
 
         FeedSelDto dto = new FeedSelDto();

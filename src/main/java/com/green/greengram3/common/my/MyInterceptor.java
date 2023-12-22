@@ -14,7 +14,7 @@ public class MyInterceptor implements HandlerInterceptor {
         String ip = request.getRemoteHost();
 
         log.info("ip = {}", ip);
-        if(ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")) {
+        if(ip.equals("localhost") || ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")) {
             return true;
         } else {
             return false;

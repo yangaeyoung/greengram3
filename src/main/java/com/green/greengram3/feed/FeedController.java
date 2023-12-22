@@ -23,7 +23,10 @@ public class FeedController {
     @Operation(summary = "피드 등록", description = "피드 등록 처리")
     @PostMapping
     public ResVo postFeed(@RequestBody FeedInsDto dto){
-        return service.postFeed(dto);
+        ResVo vo = service.postFeed(dto);
+        System.out.println("ddddddd");
+        System.out.println(vo.getResult());
+        return vo;
     }
 
     @GetMapping
@@ -46,5 +49,4 @@ public class FeedController {
     public ResVo delFeed (FeedDelDto dto){
         return service.delFeed(dto);
     }
-
 }
