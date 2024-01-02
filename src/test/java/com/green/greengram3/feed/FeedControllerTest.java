@@ -2,6 +2,7 @@ package com.green.greengram3.feed;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.greengram3.MockMvcConfig;
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.feed.model.FeedDelDto;
 import com.green.greengram3.feed.model.FeedInsDto;
@@ -27,15 +28,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(FeedController.class) // 빈등록 객체 상태로 등록
 @Slf4j
+@MockMvcConfig
+@WebMvcTest(FeedController.class) // 빈등록 객체 상태로 등록
 class FeedControllerTest {
 
     @Autowired
-    private ObjectMapper mapper;
+    private ObjectMapper mapper; // 객체를 json 형태의 문자열로 json 형태의 문자열을 객체로
     @Autowired
     private MockMvc mvc;
     // 여기까지 작성하고 실행하면 에러 발생: service 객체화 X -> mockbean // 신호 전송
+    // 예) get put patch delete
     @MockBean
     private FeedService service;
 
@@ -47,7 +50,7 @@ class FeedControllerTest {
         ResVo result = new ResVo(5); // Controller에 어노테이션 @RestController json 형태로 넘어옴
 //        when(service.postFeed(any())).thenReturn(result);
         given(service.postFeed(any())).willReturn(result); // 가짜에게 임무 부여
-        // given: 세팅, when: 실행, then: 실행한 결과
+        // given: 세팅, when: 실행, then: 검증한 결과
 
         FeedInsDto dto = new FeedInsDto();
         String json = mapper.writeValueAsString(dto);
@@ -78,10 +81,10 @@ class FeedControllerTest {
 
         FeedSelVo vo = new FeedSelVo(); // Query String으로 dto 말고 vo에다 담아줌
         vo.setIfeed(1);
-        vo.setContents("aaa");
+        vo.setContents("안녕하세요."); // utf-8 어노테이션 추가한 이후에 한글로 해도 가능
         FeedSelVo vo2 = new FeedSelVo();
         vo2.setIfeed(2);
-        vo2.setContents("bbb");
+        vo2.setContents("반가워요.");
 
         list.add(vo);
         list.add(vo2);
