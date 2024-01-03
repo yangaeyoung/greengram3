@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@MockMvcConfig
+@MockMvcConfig // 한글 깨질 수 있어서 어노테이션 추가
 @WebMvcTest(FeedController.class) // 빈등록 객체 상태로 등록
 class FeedControllerTest {
 
@@ -64,7 +64,7 @@ class FeedControllerTest {
                                 .content(json) // body 부분 json으로 받기, 위 두 개는 헤더 부분
                 )
                 .andExpect(status().isOk()) // status: 성공 값 {"result" : 5}
-                .andExpect(content().string(mapper.writeValueAsString(result))) // json 형태로 돌아올 것을 기대함
+                .andExpect(content().string(mapper.writeValueAsString(result))) // json 형태로 돌아올 것을 기대함 (실제로 db의 값이 변경되는 것이 아니기 때문에 andExpect에서 바로 mapper 값을 비교)
                 .andDo(print()); // 결과 프린터
 
         verify(service).postFeed(any()); // Mock Object 메소드가 정해진 횟수만큼 호출 됐는지
